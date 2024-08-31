@@ -1,0 +1,76 @@
+#include <iostream>
+using namespace std;
+template<class T>
+class asc {
+    public:
+        bool operator()(T a, T b) {
+            return a > b;
+        }
+};
+
+template<class T>
+class des {
+public:
+    bool operator()(T a, T b) {
+        return a <  b;
+    }
+};
+
+template<class T, class o>
+struct bubble {
+    void operator()(T* ini, T* fin) {
+        o k;
+        bool sigue = true;
+        while ((ini < fin) && sigue) {
+            sigue = false;
+            for (T* p = ini; p < fin; p++) {
+                if (k(*p, *(p + 1))) {
+                    swap(*p, *(p + 1));
+                    sigue = true;
+                }
+            }
+        }
+    }
+};
+
+/*template<class T, T op>
+void bubble(int* ini, int* fin, T op) {
+    bool sigue = true;
+    while ((ini < fin) && sigue) {
+        sigue = false;
+        for (int* p = ini; p < fin; p++) {
+            if (op(*p, *(p + 1))) {
+                swap(*p, *(p + 1));
+                sigue = true;
+            }
+        }
+    }
+}*/
+template<class T>
+void print(T* ini, T* fin) {
+    for (T* p = ini; p < fin+1; p++) {
+        cout << *p << " " ;
+        }
+    cout<< endl;
+}
+
+int main()
+{
+    int A[6] = { 6,5,4,3,2,1 };
+    char X[6] = { 'a','g','k','l','o','y' };
+    /*bubble(A, A + 5, asc<int>());
+    bubble(A, A + 5, des<int>());*/
+    bubble<int, asc<int>> x;
+    x(A, A + 5);
+    print(A, A + 5);
+    bubble<int, des<int>> y;
+    y(A, A + 5);
+    print(A, A + 5);
+
+    bubble<char, asc<char>> z;
+    z(X, X + 5);
+    print(X, X + 5);
+    bubble<char, des<char>> b;
+    b(X, X + 5);
+    print(X, X + 5);
+}

@@ -1,0 +1,107 @@
+#include <iostream>
+using namespace std;
+template<class T>
+class asc {
+public:
+    asc(node<T>* head, node<T>* nuevo) {
+        if (head->valor > nuevo->valor) {
+            nuevo->next = head->next;
+            head = nuevo;
+        }
+        for (nodo<T>* p = head; p != NULL; p = p->next) {
+            if(p->next->valor>nuevo-)
+        }
+    }
+};
+
+template<class T>
+class des {
+public:
+    
+};
+
+template<class T>
+struct nodo {
+    T valor;
+    nodo<T>* next;
+    nodo(T v, nodo<T>* n = NULL) {
+        valor = v;
+        next = n;
+    }
+};
+
+template<class T, class u>
+struct le {
+    nodo<T>* head = NULL;
+    void add(T v) {
+        nodo<T>* n = new nodo<T>(v, NULL);
+        if (head == NULL) {    
+            head = n;
+        }
+        else {
+
+        }
+    }
+    void del(T v) {
+        nodo<T>* pos;
+        if (find(v, pos)) {
+            if (head == pos) {
+                head = pos->next;
+                delete pos;
+            }
+            else if (pos->next == NULL) {
+                nodo<T>* prev = NULL;
+                for (nodo<T>* p = head; p != pos; p = p->next) {
+                    prev = p;
+                }
+                prev->next = NULL;
+                delete pos;
+            }
+            else {
+                nodo<T>* prev= NULL;
+                for (nodo<T>* p = head; p != pos; p = p->next) {
+                    prev = p;
+                }
+                prev->next = pos->next;
+                delete pos;
+
+            }
+        }
+    }
+    bool find(T v,nodo<T>* &pos){
+        for (nodo<T>* p = head; p != NULL; p = p->next) {
+            if (p->valor == v) {
+                pos = p;
+                return true;
+            }
+        }
+        return false;
+    }
+    void print() {
+        for (nodo<T>* p = head; p != NULL; p=p->next) {
+            cout << p->valor << " ";
+        }
+        cout << endl;
+    }
+};
+
+
+
+
+int main()
+{
+    le<int,asc<int>> a;
+    a.add(3);
+    a.add(5);
+    a.add(7);
+    a.add(9);
+    a.add(6);
+    a.add(1);
+    a.print();
+    a.del(3);
+    a.print();
+    a.del(1);
+    a.print();
+    a.del(9);
+    a.print();
+}

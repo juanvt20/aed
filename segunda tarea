@@ -108,44 +108,6 @@ int main()
 /////////////
 #include <iostream>
 using namespace std;
-template<class T>
-class asc {
-public:
-    asc(node<T>* head, node<T>* nuevo) {
-        if (head->valor > nuevo->valor) {
-            nuevo->next = head->next;
-            head = nuevo;
-            return;
-        }
-        for (nodo<T>* p = head; p != NULL; p = p->next) {
-            if(p->next->valor>nuevo->valor||p->next==NULL){
-                nuevo->next=p->next;
-                p->next=nuevo;
-                return;
-            }
-        }
-    }
-};
-
-template<class T>
-class des {
-public:
-    des(node<T>* head, node<T>* nuevo) {
-        if (head->valor < nuevo->valor) {
-            nuevo->next = head->next;
-            head = nuevo;
-            return;
-        }
-        for (nodo<T>* p = head; p != NULL; p = p->next) {
-            if(p->next->valor<nuevo->valor||p->next==NULL){
-                nuevo->next=p->next;
-                p->next=nuevo;
-                return;
-            }
-        }
-    }
-};
-};
 
 template<class T>
 struct nodo {
@@ -157,45 +119,80 @@ struct nodo {
     }
 };
 
-template<class T, class u>
+template<class T>
+class asc {
+public:
+    asc(nodo<T>* &head, nodo<T>* &nuevo) {
+        if (head->valor > nuevo->valor) {
+            nuevo->next = head;
+            head = nuevo;
+            return;
+        }
+        for (nodo<T>* p = head; p != NULL; p = p->next) {
+            if (p->next == NULL||p->next->valor > nuevo->valor  ) {
+                nuevo->next = p->next;
+                p->next = nuevo;
+                return;
+            }
+        }
+    }
+};
+
+template<class T>
+class des {
+public:
+    des(nodo<T>* &head, nodo<T>* &nuevo) {
+        if (head->valor < nuevo->valor) {
+            nuevo->next = head;
+            head = nuevo;
+            return;
+        }
+        for (nodo<T>* p = head; p != NULL; p = p->next) {
+            if (p->next == NULL || p->next->valor < nuevo->valor) {
+                nuevo->next = p->next;
+                p->next = nuevo;
+                return;
+            }
+        }
+    }
+};
+
+template<class T, class o>
 struct le {
     nodo<T>* head = NULL;
     void add(T v) {
+        
         nodo<T>* n = new nodo<T>(v, NULL);
-        if (head == NULL) {    
+        if (head == NULL) {
             head = n;
         }
         else {
-
+            o op(head, n);          
         }
     }
     void del(T v) {
         nodo<T>* pos;
         if (find(v, pos)) {
+            nodo<T>* prev = NULL;
+            for (nodo<T>* p = head; p != pos; p = p->next) {
+                prev = p;
+            }
             if (head == pos) {
                 head = pos->next;
                 delete pos;
             }
             else if (pos->next == NULL) {
-                nodo<T>* prev = NULL;
-                for (nodo<T>* p = head; p != pos; p = p->next) {
-                    prev = p;
-                }
                 prev->next = NULL;
                 delete pos;
             }
             else {
-                nodo<T>* prev= NULL;
-                for (nodo<T>* p = head; p != pos; p = p->next) {
-                    prev = p;
-                }
                 prev->next = pos->next;
                 delete pos;
 
             }
         }
     }
-    bool find(T v,nodo<T>* &pos){
+    bool find(T v, nodo<T>*& pos) {
         for (nodo<T>* p = head; p != NULL; p = p->next) {
             if (p->valor == v) {
                 pos = p;
@@ -205,7 +202,7 @@ struct le {
         return false;
     }
     void print() {
-        for (nodo<T>* p = head; p != NULL; p=p->next) {
+        for (nodo<T>* p = head; p != NULL; p = p->next) {
             cout << p->valor << " ";
         }
         cout << endl;
@@ -217,7 +214,7 @@ struct le {
 
 int main()
 {
-    le<int,asc<int>> a;
+    le<int, des<int>> a;
     a.add(3);
     a.add(5);
     a.add(7);

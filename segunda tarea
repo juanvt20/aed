@@ -1,4 +1,4 @@
-#include <iostream>
+/*#include <iostream>
 using namespace std;
 
 template<class T>
@@ -14,14 +14,14 @@ struct nodo {
 template<class T>
 class asc {
 public:
-    asc(nodo<T>* &head, nodo<T>* &nuevo) {
+    asc(nodo<T>*& head, nodo<T>*& nuevo) {
         if (head->valor > nuevo->valor) {
             nuevo->next = head;
             head = nuevo;
             return;
         }
         for (nodo<T>* p = head; p != NULL; p = p->next) {
-            if (p->next == NULL||p->next->valor > nuevo->valor  ) {
+            if (p->next == NULL || p->next->valor > nuevo->valor) {
                 nuevo->next = p->next;
                 p->next = nuevo;
                 return;
@@ -33,7 +33,7 @@ public:
 template<class T>
 class des {
 public:
-    des(nodo<T>* &head, nodo<T>* &nuevo) {
+    des(nodo<T>*& head, nodo<T>*& nuevo) {
         if (head->valor < nuevo->valor) {
             nuevo->next = head;
             head = nuevo;
@@ -53,13 +53,12 @@ template<class T, class o>
 struct le {
     nodo<T>* head = NULL;
     void add(T v) {
-        
         nodo<T>* n = new nodo<T>(v, NULL);
         if (head == NULL) {
             head = n;
         }
         else {
-            o op(head, n);          
+            o op(head, n);
         }
     }
     void del(T v) {
@@ -107,6 +106,115 @@ struct le {
 int main()
 {
     le<int, des<int>> a;
+    a.add(3);
+    a.add(5);
+    a.add(7);
+    a.add(9);
+    a.add(6);
+    a.add(1);
+    a.print();
+    a.del(3);
+    a.print();
+    a.del(1);
+    a.print();
+    a.del(9);
+    a.print();
+}*/
+#include <iostream>
+using namespace std;
+
+template<class T>
+struct nodo {
+    T valor;
+    nodo<T>* next;
+    nodo(T v, nodo<T>* n = NULL) {
+        valor = v;
+        next = n;
+    }
+};
+
+template<class T>
+struct asc {
+
+    bool operator()(T a, T b) {
+        return a > b;
+    }
+};
+
+template<class T>
+struct des {
+
+    bool operator()(T a, T b) {
+        return a < b;
+    }
+};
+
+template<class T, class o>
+struct le {
+    nodo<T>* head = nullptr;
+    void add(T v) {
+        
+        /*nodo<T>* pos;
+        if (head == NULL) {
+            nodo<T>* n = new nodo<T>(v, NULL);
+            head = n;
+            return;
+        }
+        if (find(v,pos)) {
+            return;
+        }
+        else {
+            pos->next = new nodo<T>(v, pos->next);
+        }*/
+        nodo<T>* p;
+        if (!find(v, p)) {
+            if (p == nullptr) {
+                head = new nodo<T>(v, head);
+            }
+            else {
+                p->next = new nodo<T>(v, p->next);
+            }
+        }
+        else {
+            return;
+        }
+    }
+    void del(T v) {
+        nodo<T>* p;
+        if (find(v, p)) {
+            nodo<T>* borrar=p->next;
+            p->next = borrar->next;
+            borrar->next = borrar;
+            delete borrar;
+        }
+        else {
+            return;
+        }
+    }
+    bool find(T v, nodo<T>*& pos) {
+        o op;
+        pos = NULL;
+        nodo<T>* p = head;
+        for (; p && op(v, p->valor); pos = p, p = p->next);
+        if (p && p->valor == v) {
+            return true;
+        }
+        return false;
+    }
+    void print() {
+        for (nodo<T>* p = head; p != NULL; p = p->next) {
+            cout << p->valor << " ";
+        }
+        cout << endl;
+    }
+};
+
+
+
+
+int main()
+{
+    le<int, asc<int>> a;
     a.add(3);
     a.add(5);
     a.add(7);

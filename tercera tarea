@@ -58,9 +58,48 @@ struct le {
 
     }
     void del(T v) {
-    }
-    bool find(T v, nodo<T>*& pos) {
+        T* pos;
+        nodo<T>* ubi;
+        int cambio = 0;
+        if (find(v, pos,ubi)) {
+            if (pos != ubi->valor) {
+                nodo<T>* pp = head;
+                for (; pp->next != NULL; pp = pp->next) {
+                }
+                pp->top--;
+                for (nodo<T>* p = ubi; p != NULL; p = p->next) {
+                    for (T* p0 = pos; p0 <= p->top; p0++) {
+                        if (p0 == pp->top) {
+                            delete p0;
+                            return;
+                        }
+                        if (p0==ubi->top) {
+                            cambio = 1;
+                        }else{
+                            *p0 = *(p0 + 1);
+                        }
+                    }
+                }
+            }
+            else {
 
+            }
+        }
+        else {
+            cout << "no existe el numero: " << v << endl;
+        }
+    }
+    bool find(T v, T*& pos, nodo<T>* &ubi) {
+        for (nodo<T>* p = head; p != NULL; p = p->next) {
+            for (T* p0 = p->valor; p0 <= p->top; p0++) {
+                if (v==*p0) {
+                    pos = p0;
+                    ubi = p;
+                    return true;
+                }
+            }
+        }
+        return false;
     }
     void print() {
         cout << "HEAD -> ";
@@ -90,7 +129,12 @@ int main()
     a.add(7);
     a.add(1);
     a.add(20);
+    a.add(9);
+    a.add(15);
+    a.add(4);
+    a.add(6);
 
+    a.add(9);
     a.print();
     return 0;
 }

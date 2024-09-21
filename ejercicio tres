@@ -1,0 +1,96 @@
+#include <iostream>
+using namespace std;
+
+template<class T>
+struct nodo {
+    T valor[5];
+    nodo<T>* next = NULL;
+    T* top = valor;
+};
+
+template<class T>
+struct le {
+    nodo<T>* head = NULL;
+    void add(T v) {
+        if (head == NULL) {
+            head = new nodo<T>;
+            head->valor[0] = v;
+            return;
+        }
+        nodo<T>* pp = head;
+        for (; pp->next != NULL; pp = pp->next) {
+        }
+        int cont = 0;
+        if (pp->top == &(pp->valor[4])) {
+            nodo<T>* nuevo = new nodo<T>;
+            pp->next = nuevo;
+            cont = 1;
+        }
+        T n;
+        T a;
+        int cambio=0;
+        for (nodo<T>* p = head; p != NULL; p = p->next) {
+            for (T* p0 = p->valor; p0 <= p->top; p0++) {
+                if (cambio == 1) {
+                    a = *p0;
+                    *p0 = n;
+                    n = a;
+                }
+                if (*p0 > v&&cambio==0) {//mayor
+                    n = *p0;
+                    *p0 = v;
+                    cambio = 1;
+                }
+            }
+        }
+        for (; pp->next != NULL; pp = pp->next) {
+        }
+        pp->top++;
+        if (cambio == 0) {
+            *(pp->top) = v;
+        }
+        if (cambio==1) {
+            *(pp->top) = n;
+        }
+        if (cont == 1) {
+            pp->top--;
+        }
+
+    }
+    void del(T v) {
+    }
+    bool find(T v, nodo<T>*& pos) {
+
+    }
+    void print() {
+        cout << "HEAD -> ";
+        for (nodo<T>* p = head; p != NULL; p = p->next) {
+            cout << "[";
+            for (T* p0 = p->valor; p0 <= p->top; p0++) {
+                cout<< *p0<<", ";
+            }
+            cout << "] ->";
+        }
+        cout <<"NULL" << endl;
+    }
+};
+
+
+
+
+int main()
+{
+    le<int> a;
+    a.add(4);
+    a.add(6);
+
+    a.add(9);
+    a.add(15);
+    a.add(3);
+    a.add(7);
+    a.add(1);
+    a.add(20);
+
+    a.print();
+    return 0;
+}

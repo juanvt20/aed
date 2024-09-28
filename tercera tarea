@@ -12,7 +12,7 @@ template<class T>
 struct le {
     nodo<T>* head = NULL;
     void add(T v) {
-        if (head == NULL) {
+        /*if (head == NULL) {
             head = new nodo<T>;
             head->valor[0] = v;
             return;
@@ -54,48 +54,99 @@ struct le {
         }
         if (cont == 1) {
             pp->top--;
+        }*/
+        if (head == NULL) {
+            head = new nodo<T>;
+            head->valor[0] = v;
+            return;
         }
-
+        else {
+            T* pos = nullptr;
+            nodo<T>* ubi = nullptr;
+            if (!find(v, pos, ubi)) {
+                nodo<T>* pp = head;
+                for (; pp->next != NULL; pp = pp->next) {
+                }
+                int cont = 0;
+                if (pp->top == &(pp->valor[4])) {
+                    nodo<T>* nuevo = new nodo<T>;
+                    pp->next = nuevo;
+                    cont = 1;
+                }
+                T n;
+                T a;
+                int cambio = 0;
+                for (nodo<T>* p = ubi; p != NULL; p = p->next) {
+                    for (T* p0 = p->valor; p0 <= p->top; p0++) {
+                        if (cambio == 1) {
+                            a = *p0;
+                            *p0 = n;
+                            n = a;
+                        }
+                        if (*p0 > v && cambio == 0) {//mayor
+                            n = *p0;
+                            *p0 = v;
+                            cambio = 1;
+                        }
+                    }
+                }
+                for (; pp->next != NULL; pp = pp->next) {
+                }
+                pp->top++;
+                if (cambio == 0) {
+                    *(pp->top) = v;
+                }
+                if (cambio == 1) {
+                    *(pp->top) = n;
+                }
+                if (cont == 1) {
+                    pp->top--;
+                }
+            }
+        }
     }
     void del(T v) {
         T* pos;
         nodo<T>* ubi;
-        int cambio = 0;
-        if (find(v, pos,ubi)) {
-            if (pos != ubi->valor) {
-                nodo<T>* pp = head;
-                for (; pp->next != NULL; pp = pp->next) {
-                }
-                pp->top--;
-                for (nodo<T>* p = ubi; p != NULL; p = p->next) {
-                    for (T* p0 = pos; p0 <= p->top; p0++) {
-                        if (p0 == pp->top) {
-                            delete p0;
-                            return;
-                        }
-                        if (p0==ubi->top) {
-                            cambio = 1;
-                        }else{
-                            *p0 = *(p0 + 1);
-                        }
-                    }
-                }
+        if (find(v, pos, ubi)) {
+            for (; pos < ubi->top; pos++) {
+                *pos = *(pos + 1);
             }
-            else {
+            ubi->top--;
+            for (nodo<T>* actual = ubi; actual != NULL && actual->next != NULL; actual = actual->next) {
+                nodo<T>* siguiente = actual->next;
+                if (siguiente->valor <= siguiente->top) {
+                    *(actual->top + 1) = *(siguiente->valor);
+                    actual->top++;
+                    for (T* p0 = siguiente->valor; p0 < siguiente->top; p0++) {
+                        *p0 = *(p0 + 1);
+                    }
+                    siguiente->top--;
+                }
 
+                if (siguiente->top < siguiente->valor) {
+                    actual->next = siguiente->next;
+                    delete siguiente;
+                }
             }
         }
         else {
-            cout << "no existe el numero: " << v << endl;
+            cout << "No existe el número: " << v << endl;
         }
     }
+
+
     bool find(T v, T*& pos, nodo<T>* &ubi) {
         for (nodo<T>* p = head; p != NULL; p = p->next) {
             for (T* p0 = p->valor; p0 <= p->top; p0++) {
-                if (v==*p0) {
-                    pos = p0;
-                    ubi = p;
+                pos = p0;
+                ubi = p;
+                if (v==*p0) {                    
                     return true;
+                }
+                if (v < *p0) {
+
+                    return false;
                 }
             }
         }
@@ -135,6 +186,12 @@ int main()
     a.add(6);
 
     a.add(9);
+    a.print();
+    a.del(15);
+    a.print();
+    a.del(20);
+    a.print();
+    a.del(7);
     a.print();
     return 0;
 }

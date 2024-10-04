@@ -1,0 +1,114 @@
+#include <iostream>
+using namespace std;
+
+template<class T>
+struct nodo {
+	T val;
+	nodo<T>* next=nullptr;
+	nodo<T>* prev = nullptr;
+	nodo(T v) {
+		val = v;
+	}
+};
+
+template<class T>
+class Pila {
+public:
+	nodo<T>* top = nullptr;
+	void push(T val) {
+		nodo<T>* nuevo = new nodo<T>(val);
+		if (top == nullptr) {
+			top = nuevo;
+		}
+		else {
+			top->next = nuevo;
+			top->next->prev = top;
+			top = nuevo;
+		}
+	}
+	bool pop(T& val) {
+		if (top != nullptr) {
+			nodo<T>* tmp = top;
+			val = tmp->val;
+			top = tmp->prev;
+			delete tmp;
+			return true;
+		}
+		return false;
+	}
+	void print() {
+		cout << "top-> ";
+		
+		for (nodo<T>* p = top; p!=nullptr; p = p->prev) {
+			cout << p->val << " -> ";
+		}
+		cout << "null"<<endl;
+	}
+};
+
+template<class T>
+class Cola {
+public:
+	nodo<T>* head = nullptr;
+	nodo<T>* tail = nullptr;
+	void push(T val) {
+		nodo<T>* nuevo = new nodo<T>(val);
+		if (tail == nullptr) {
+			tail = nuevo;
+			head = nuevo;
+		}
+		else {
+			nuevo->next = tail;
+			tail = nuevo;
+			tail->next->prev = tail;
+			
+		}
+	}
+	bool pop(T& val) {
+		if (head != nullptr) {
+			nodo<T>* tmp = head;
+			val = tmp->val;
+			head = tmp->prev;
+			delete tmp;
+			return true;
+		}
+		return false;
+	}
+	void print() {
+		cout << "head-> ";
+
+		for (nodo<T>* p = head; p != nullptr; p = p->prev) {
+			cout << p->val << " -> ";
+		}
+		cout << "<-tail " << endl;
+	}
+};
+
+int main() {
+	Pila<int> a;
+	int ref;
+	a.push(4);
+	a.push(5);
+	a.push(6);
+	a.push(7);
+	a.push(8);
+	a.push(9);
+	a.print();
+	a.pop(ref);
+	cout << ref << endl;
+	a.print();
+	//////////////////////////////////////////////////////////////
+	Cola<int> b;
+	//int ref;
+	b.push(4);
+	b.push(5);
+	b.push(6);
+	b.push(7);
+	b.push(8);
+	b.push(9);
+	b.print();
+	b.pop(ref);
+	cout << ref << endl;
+	b.print();
+
+}
